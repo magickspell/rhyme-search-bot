@@ -13,7 +13,7 @@ export const SongModel = sequelize.define('song', {
   },
   title: {
     type: DataTypes.STRING,
-    unique: true
+    unique: false
   },
   chorus: {
     type: DataTypes.STRING(1000)
