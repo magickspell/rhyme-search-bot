@@ -8,6 +8,21 @@ config()
 
 const bot = new TelegramApi(process.env.BOT_TOKEN, {polling: true})
 
+bot.setMyCommands([
+  {
+    command: '/start',
+    description: 'приветствие'
+  },
+  {
+    command: '/info',
+    description: 'информация'
+  },
+  {
+    command: '/example',
+    description: 'пример'
+  },
+])
+
 bot.on('message', async msg => {
   try {
     const text = msg.text
@@ -20,6 +35,12 @@ bot.on('message', async msg => {
     if (text === '/info') {
       await bot.sendMessage(chatId, 'Я ищю похожую рифму в своей базе треков и выдаю наиболее подходящий результат.')
       /*await bot.sendMessage(chatId, 'База данных бота заполнена некоторыми треками, взятыми с сайта genius.com')*/
+      return
+    }
+    if (text === '/example') {
+      await bot.sendMessage(chatId, 'Попробуйте отправить мне текст из сообщения ниже:')
+      await bot.sendMessage(chatId, 'Хочешь ли ты мне что-то сказать?')
+      await bot.sendMessage(chatId, '... я должен ответить вот так: "ваше произведение похоже на: МакSим - Знаешь ли ты"')
       return
     }
     await bot.sendMessage(chatId, 'Принято, начинаю поиск...')
