@@ -95,6 +95,13 @@ export const findMusic = async (str) => {
   let pivotScores = []
   for (let item in data) {
     const tempScore = getArrScore(data[item].chorus, strRhyme)
+    // break if we find something with high score
+    if (tempScore > maxScore/1.2) {
+      return ({
+        result: true,
+        message: `ваше произведение похоже на: ${data[item].artist} - ${data[item].title}`,
+      })
+    }
     pivotScores.push(tempScore)
   }
   if (Math.max(...pivotScores) > maxScore / 2) {
