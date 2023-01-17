@@ -38,9 +38,9 @@ function getArrScore(target, compared) {
   for (let x in target) {
     for (let y in target[x]) {
       if (target[x] && compared[x]) {
-       if (target[x][y] === compared[x][y]) {
-         score++
-       }
+        if (target[x][y] === compared[x][y]) {
+          score++
+        }
       }
     }
   }
@@ -67,7 +67,8 @@ export const findMusic = async (str) => {
   data = data.map(i => {
     return ({
       ...i,
-      chorus: getRhyme(i.chorus)
+      chorus: getRhyme(i.chorus),
+      originalChorus: i.chorus
     })
   })
   // let's try to find exactly match rhyme
@@ -75,7 +76,7 @@ export const findMusic = async (str) => {
     if (_.isEqual(data[item].chorus, strRhyme) === true) {
       return ({
         result: true,
-        message: `ваше произведение похоже на: ${data[item].artist} - ${data[item].title}`,
+        message: `ваше произведение похоже на: ${data[item].artist} - ${data[item].title}.\n\nприпев песни:\n${data[item].originalChorus}\`,`,
       })
     }
   }
@@ -96,19 +97,19 @@ export const findMusic = async (str) => {
   for (let item in data) {
     const tempScore = getArrScore(data[item].chorus, strRhyme)
     // break if we find something with high score
-    if (tempScore > maxScore/1.2) {
+    if (tempScore > maxScore / 1.2) {
       return ({
         result: true,
-        message: `ваше произведение похоже на: ${data[item].artist} - ${data[item].title}`,
+        message: `ваше произведение похоже на: ${data[item].artist} - ${data[item].title}.\n\nприпев песни:\n${data[item].originalChorus}`,
       })
     }
     pivotScores.push(tempScore)
   }
   if (Math.max(...pivotScores) > maxScore / 2) {
-    const founded =  data[pivotScores.indexOf(Math.max(...pivotScores))]
+    const founded = data[pivotScores.indexOf(Math.max(...pivotScores))]
     return ({
       result: true,
-      message: `ваше произведение похоже на: ${founded.artist} - ${founded.title}`,
+      message: `ваше произведение похоже на: ${founded.artist} - ${founded.title}.\n\nприпев песни:\n${founded.originalChorus}`,
     })
   }
   // if nothing works - return false
